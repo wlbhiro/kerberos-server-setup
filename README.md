@@ -33,6 +33,17 @@ Ansible Version : 2.4
 Kerberos Version : 5(1.15)
 
 
+REQUIRED OPERATION COMMANDS
+------------------------------
+
+```
+export KRB5_SERVER="kerberos-server.local"
+sudo bash -c "echo '${KRB5_SERVER}' > /etc/hostname"
+sudo bash -c "hostname ${KRB5_SERVER}"
+### HAVE TO RELOGIN ###
+```
+
+
 Role Variables
 --------------
 
