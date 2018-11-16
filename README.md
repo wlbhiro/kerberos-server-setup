@@ -69,6 +69,51 @@ Example Playbook
                  kerberos.kadmin_pass: password
             }
 
+
+Kerberos(KDC) Operation Check Command
+----------------------------------------
+
+```
+[root@kerberos-server ~]# kadmin.local
+Authenticating as principal root/admin@LOCAL with password.
+kadmin.local:  add_principal root
+WARNING: no policy specified for root@LOCAL; defaulting to no policy
+Enter password for principal "root@LOCAL": 
+Re-enter password for principal "root@LOCAL": 
+Principal "root@LOCAL" created.
+kadmin.local:  exit
+[root@kerberos-server ~]# kinit root
+Password for root@LOCAL: 
+[root@kerberos-server ~]# klist -e
+Ticket cache: KEYRING:persistent:0:0
+Default principal: root@LOCAL
+
+Valid starting       Expires              Service principal
+11/16/2018 11:39:35  11/17/2018 11:39:35  krbtgt/LOCAL@LOCAL
+Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 
+[root@kerberos-server ~]# 
+```
+
+
+Trouble Shooting (Error krb5-libs Install)
+--------------------------------------------
+
+Error : 
+
+```
+--> Finished Dependency Resolution
+Error: Package: krb5-server-1.15.1-18.el7.x86_64
+        Requires: krb5-libs(x86-64) = 1.15.1-18.el7
+        Installed: krb5-libs-1.15.1-19.el7
+        ...........
+```
+
+Solve : 
+
+```
+sudo yum downgrade krb5-libs
+```
+
 License
 -------
 
