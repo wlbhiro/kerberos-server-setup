@@ -67,19 +67,30 @@ No.
 Example Playbook
 ----------------
 
+Vars sample:
+
+ex. group_vars/kerberos, vars/main.yml
+
+```
+kerberos:
+  kdc: localhost.localdomain
+  admin_server: localhost.localdomain
+  realm: localdomain
+  kdc_ports: 88
+  kdc_tcp_ports: 88
+  master_pass: password
+  kadmin_user: kadmin_user
+  kadmin_pass: password
+```
+
+
+Playbook sample:
+
+```
     - hosts: kerberos-server
       roles:
-         - { role: wlbhiro.kerberos-server-setup, 
-                 kerberos.kdc: kerberos-server.local,
-                 kerberos.admin_server: kerberos-server.local,
-                 kerberos.realm: local,
-                 kerberos.kdc_ports: 88,
-                 kerberos.kdc_tcp_ports: 88,
-                 kerberos.master_pass: password,
-                 kerberos.kadmin_user: kadmin_user,
-                 kerberos.kadmin_pass: password
-            }
-
+         - role: wlbhiro.kerberos-server-setup 
+```
 
 Kerberos(KDC) Operation Check Command
 ----------------------------------------
