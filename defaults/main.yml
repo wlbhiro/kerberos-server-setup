@@ -1,0 +1,11 @@
+---
+# defaults file for kerberos-server-setup
+kerberos:
+  kdc: kerberos-server.local
+  admin_server: kerberos-server.local
+  realm: local
+  kdc_ports: 88
+  kdc_tcp_ports: 88
+  master_pass: password
+  kadmin_user: kadmin_user
+  kadmin_pass: password

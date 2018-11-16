@@ -1,0 +1,54 @@
+---
+- name: Install Kerberos
+  become: yes
+  yum :
+    name: "{{ item }}"
+    state: "present"
+  with_items:
+    - krb5-server
+    - krb5-workstation
+
+- name: Deploy KDC Server Config file (into /etc/krb5.conf.d/)
+  become: yes
+  template:
+    src: "kdc.conf.j2"
+    dest: "/var/kerberos/krb5kdc/kdc.conf"
+
+- name: Deploy kadm5.acl Config file (to /var/kerberos/krb5kdc/kadm5.acl)
+  become: yes
+  template:
+    src: "kadm5.acl.j2"
+    dest: "/var/kerberos/krb5kdc/kadm5.acl"
+
+- name: Deploy KDC Client Config file (into /etc/krb5.conf.d/)
+  become: yes
+  template:
+    src: "krb5.conf.j2"
+    dest: "/etc/krb5.conf"
+
+- name: Init Kerberos Database
+  become: yes
+  shell: 'echo -e "{{ kerberos.master_pass }}\n{{ kerberos.master_pass }}" | kdb5_util create -s; touch /var/kerberos/ANSIBLE_DB_CREATED'
+  args:
+    creates: /var/kerberos/ANSIBLE_DB_CREATED
+
+- name: Start Kerberos Service
+  become: yes
+  systemd: 
+    name: "{{ item }}"
+    state: "started"
+    enabled: yes
+  with_items: 
+    - krb5kdc
+    - kadmin
+
+- name: Add Admin Principal
+  become: yes
+  shell: 'echo -e "{{ kerberos.kadmin_pass }}\n{{ kerberos.kadmin_pass }}" | kadmin.local  -q "addprinc {{ kerberos.kadmin_user }}/admin"; touch /var/kerberos/ANSIBLE_KADMIN_CREATED'
+  args:
+    creates: /var/kerberos/ANSIBLE_KADMIN_CREATED
+
+
+
+
+

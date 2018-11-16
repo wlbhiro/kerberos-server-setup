@@ -1,0 +1,5 @@
+---
+# tasks file for kerberos-server-setup
+- import_tasks: RedHat.yml
+  when: ansible_os_family == "RedHat"
+
